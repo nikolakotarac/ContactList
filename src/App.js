@@ -1,14 +1,13 @@
 import React from "react";
-import { Navbar } from "./components/Navbar";
 import ContactList from "./components/ContactList";
 import AddContact from "./components/AddContact";
-
+import { Navbar } from "./components/Navbar";
 function App() {
   return (
     <div className="bg-transparent flex flex-col mx-auto p-6 my-auto">
       <Navbar />
-      <AddContact />
       <ContactList />
+      <AddContact />
     </div>
   );
 }

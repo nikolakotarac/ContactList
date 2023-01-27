@@ -1,5 +1,5 @@
-import React from "react";
-import SingleContact from "./SingleContact";
+import React, { useState } from "react";
+import EditContact from "../EditContact";
 import { useGlobalContext } from "../context";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
@@ -11,33 +11,42 @@ import {
 
 const ContactList = () => {
   const {
-    item,
-    handleDelete,
+    contacts,
     openAdd,
     isOpenAdd,
-    openContactId,
-    setOpenContactId,
+    handleDelete,
+    addToFavourite,
     filterFavourite,
     allItemsHandle,
-    addToFavourite,
   } = useGlobalContext();
+
+  const [showEditContact, setShowEditContact] = useState(false);
+  const [contactId, setContactId] = useState("");
+
+  const handleEdit = (id) => {
+    setShowEditContact(true);
+    setContactId(id);
+  };
+
+  const [showInfo, setShowInfo] = useState({});
 
   return (
     <div className="flex flex-col justify-between max-w-[500px]  align-center h-auto mx-10  px-14 justify-between bg-gray-300">
       <div className="flex gap-2 pt-3">
         <button
-          className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-          onClick={allItemsHandle}>
+          onClick={allItemsHandle}
+          className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
           All Contacts
         </button>
+
         <button
-          className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
-          onClick={filterFavourite}>
+          onClick={filterFavourite}
+          className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
           Favourites
         </button>
       </div>
-      {item && item.length > 0 ? (
-        item.map((res, index) => {
+      {contacts && contacts.length > 0 ? (
+        contacts.map((res, index) => {
           return (
             <div key={index} className="flex flex-col">
               <div className="mt-6 items-center align-center flex gap-2">
@@ -52,25 +61,25 @@ const ContactList = () => {
                     )}
                   </button>
                 </div>
-                <div
-                  className="flex space-x-4 text-center items-center"
-                  onClick={() => {
-                    if (openContactId === res.id) {
-                      setOpenContactId(null);
-                    } else {
-                      setOpenContactId(res.id);
-                    }
-                  }}>
+                <div className="flex space-x-4 text-center items-center">
                   <img
-                    src={res.image}
+                    src={
+                      res.image === null
+                        ? ` https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png`
+                        : res.image
+                    }
                     alt={res.firstName}
                     className="w-12 h-12 object-cover rounded-full"
                   />
                   <p className="text-sm cursor-pointer ">
                     {res.firstName} {res.lastName}
                   </p>
-                  <button className="text-sm">
-                    {openContactId === res.id ? (
+                  <button
+                    className="text-sm"
+                    onClick={() =>
+                      setShowInfo({ ...showInfo, [index]: !showInfo[index] })
+                    }>
+                    {showInfo[index] ? (
                       <div className="flex items-center">
                         <span className="text-sm">Show Less</span>
                         <MdKeyboardArrowRight />
@@ -89,7 +98,33 @@ const ContactList = () => {
                   </button>
                 </div>
               </div>
-              {openContactId === res.id && <SingleContact id={res.id} />}
+              <div className={`pl-11 ${showInfo[index] ? "" : "hidden"}`}>
+                <img
+                  src={
+                    res.image === null
+                      ? ` https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png`
+                      : res.image
+                  }
+                  alt={res.firstName}
+                  className="w-20 h-20 object-cover mt-3"
+                />
+                <h1>First Name: {res.firstName}</h1>
+                <h1>Last Name: {res.lastName}</h1>
+                <h1>Email: {res.email}</h1>
+                <h1>Phone: {res.phone}</h1>
+                <button
+                  onClick={() => handleEdit(res.id)}
+                  className="px-10 py-2 text-md text-white bg-gray-700 my-2 rounded">
+                  Edit
+                </button>
+
+                {showEditContact && (
+                  <EditContact
+                    id={contactId}
+                    setShowEditContact={setShowEditContact}
+                  />
+                )}
+              </div>
             </div>
           );
         })

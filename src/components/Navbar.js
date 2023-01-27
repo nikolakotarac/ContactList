@@ -2,7 +2,8 @@ import React, { useRef } from "react";
 import { useGlobalContext } from "../context";
 
 export const Navbar = () => {
-  const { setSearchValue } = useGlobalContext();
+  const { setSearchValue, filterBySearch } = useGlobalContext();
+
   const searchRef = useRef(null);
   return (
     <div className="flex justify-between max-w-[500px]  align-center h-auto mx-10  text-align px-10 py-5 bg-teal-600">
@@ -34,7 +35,10 @@ export const Navbar = () => {
               id="name"
               placeholder="Search"
               ref={searchRef}
-              onChange={(e) => setSearchValue(searchRef.current.value)}
+              onChange={(e) => {
+                setSearchValue(searchRef.current.value);
+                filterBySearch();
+              }}
             />
           </div>
         </form>
