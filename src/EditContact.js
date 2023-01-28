@@ -25,10 +25,10 @@ const EditContact = ({ id, setShowEditContact }) => {
 
   const onSubmit = (data) => {
     const updatedContact = {
-      id: contact.id,
-      image,
-      favourite: contact.favourite,
       ...data,
+      id: contact.id,
+      favourite: contact.favourite,
+      image,
     };
     setContacts((prevContacts) =>
       prevContacts.map((c) => (c.id === contact.id ? updatedContact : c))
