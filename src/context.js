@@ -5,8 +5,11 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [contacts, setContacts] = useCustomLocalStorage("contacts", []);
   const [allContacts, setAllContacts] = useState(contacts);
-  const [openAdd, isOpenAdd] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [showAddOrEditContact, setShowAddOrEditContact] = useState(false);
+  const [editContactId, setEditContactId] = useState(null);
+
+  const [mode, setMode] = useState("");
 
   function useCustomLocalStorage(key, initialValue) {
     const [storedValue, setStoredValue] = useState(() => {
@@ -29,10 +32,16 @@ const AppProvider = ({ children }) => {
     }, [key, storedValue]);
     return [storedValue, setStoredValue];
   }
-  const handleSubmit = () => {};
 
-  const closeAdd = () => {
-    isOpenAdd(false);
+  const handleAdd = () => {
+    setShowAddOrEditContact(true);
+    setMode("add");
+  };
+
+  const handleEdit = (id) => {
+    setShowAddOrEditContact(true);
+    setEditContactId(id);
+    setMode("edit");
   };
 
   const handleDelete = (param) => {
@@ -40,6 +49,11 @@ const AppProvider = ({ children }) => {
       (contact) => contact.id !== param.id
     );
     setContacts([...delelteContact]);
+    const dltAllContacts = allContacts.filter(
+      (contact) => contact.id !== param.id
+    );
+
+    setAllContacts([...dltAllContacts]);
   };
 
   const addToFavourite = (res) => {
@@ -85,10 +99,6 @@ const AppProvider = ({ children }) => {
       value={{
         contacts,
         setContacts,
-        handleSubmit,
-        openAdd,
-        isOpenAdd,
-        closeAdd,
         handleDelete,
         addToFavourite,
         searchValue,
@@ -98,6 +108,12 @@ const AppProvider = ({ children }) => {
         allContacts,
         setAllContacts,
         filterBySearch,
+        handleEdit,
+        handleAdd,
+        showAddOrEditContact,
+        setShowAddOrEditContact,
+        mode,
+        editContactId,
       }}>
       {children}
     </AppContext.Provider>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import EditContact from "../EditContact";
 import { useGlobalContext } from "../context";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
+import AddOrEditContact from "./AddOrEditContact";
 import {
   MdOutlinePersonAdd,
   MdKeyboardArrowDown,
@@ -12,21 +12,16 @@ import {
 const ContactList = () => {
   const {
     contacts,
-    openAdd,
-    isOpenAdd,
     handleDelete,
     addToFavourite,
     filterFavourite,
     allItemsHandle,
+    handleEdit,
+    handleAdd,
+    showAddOrEditContact,
+    mode,
+    editContactId,
   } = useGlobalContext();
-
-  const [showEditContact, setShowEditContact] = useState(false);
-  const [contactId, setContactId] = useState("");
-
-  const handleEdit = (id) => {
-    setShowEditContact(true);
-    setContactId(id);
-  };
 
   const [showInfo, setShowInfo] = useState({});
 
@@ -48,7 +43,7 @@ const ContactList = () => {
       {contacts && contacts.length > 0 ? (
         contacts.map((res, index) => {
           return (
-            <div key={index} className="flex flex-col">
+            <div key={res.id} className="flex flex-col">
               <div className="mt-6 items-center align-center flex gap-2">
                 <div>
                   <button
@@ -64,7 +59,7 @@ const ContactList = () => {
                 <div className="flex space-x-4 text-center items-center">
                   <img
                     src={
-                      res.image === null
+                      res.image === undefined
                         ? ` https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png`
                         : res.image
                     }
@@ -101,7 +96,7 @@ const ContactList = () => {
               <div className={`pl-11 ${showInfo[index] ? "" : "hidden"}`}>
                 <img
                   src={
-                    res.image === null
+                    res.image === undefined
                       ? ` https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png`
                       : res.image
                   }
@@ -117,13 +112,6 @@ const ContactList = () => {
                   className="px-10 py-2 text-md text-white bg-gray-700 my-2 rounded">
                   Edit
                 </button>
-
-                {showEditContact && (
-                  <EditContact
-                    id={contactId}
-                    setShowEditContact={setShowEditContact}
-                  />
-                )}
               </div>
             </div>
           );
@@ -138,10 +126,16 @@ const ContactList = () => {
       <div>
         <button
           className="px-5 py-3 text-l font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 my-3"
-          onClick={() => isOpenAdd(!openAdd)}>
+          onClick={handleAdd}>
           Add Contact
           <MdOutlinePersonAdd className="text-l " />
         </button>
+        {showAddOrEditContact && editContactId !== null && mode === "edit" && (
+          <AddOrEditContact mode={mode} contactId={editContactId} />
+        )}
+        {showAddOrEditContact && mode === "add" && (
+          <AddOrEditContact mode={mode} />
+        )}
       </div>
     </div>
   );
