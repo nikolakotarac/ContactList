@@ -5,6 +5,7 @@ export const Navbar = () => {
   const { setSearchValue, filterBySearch } = useGlobalContext();
 
   const searchRef = useRef(null);
+
   return (
     <div className="flex justify-between max-w-[500px]  align-center h-auto mx-10  text-align px-10 py-5 bg-teal-600">
       <div>
@@ -13,7 +14,12 @@ export const Navbar = () => {
         </a>
       </div>
       <section>
-        <form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSearchValue(searchRef.current.value);
+            filterBySearch();
+          }}>
           <div className="flex relative">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +43,6 @@ export const Navbar = () => {
               ref={searchRef}
               onChange={(e) => {
                 setSearchValue(searchRef.current.value);
-                filterBySearch();
               }}
             />
           </div>

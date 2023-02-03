@@ -26,6 +26,8 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
     setValue,
   } = useForm({ defaultValues: mode === "add" ? initialValues : contact });
 
+  const [errorImageMessage, setErrorImageMessage] = useState(null);
+
   const [image, setImage] = useState(
     mode === "add" ? initialValues.image : contact.image
   );
@@ -40,6 +42,13 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
+    if (file.size > 1000000) {
+      setErrorImageMessage(
+        "File size is too large. Please choose a smaller file."
+      );
+      return;
+    }
+    setErrorImageMessage(null);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -165,7 +174,9 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
                     : ` https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png`
                 }
                 className=" w-20"
+                alt="img"
               />
+              <p className="text-red-900">{errorImageMessage}</p>
             </div>
             <div className="flex gap-7 pt-3">
               <button
