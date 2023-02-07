@@ -96,9 +96,9 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
       ref={completeButtonRef}
       open={showAddOrEditContact}
       onClose={() => setShowAddOrEditContact(false)}>
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-hidden fixed inset-0 z-50 outline-none focus:outline-none">
+      <div className="justify-center items-center flex overflow-x-hidden overflow-y-hidden fixed inset-0 z-50 outline-none focus:outline-none w-96 mx-auto bg-white rounded shadow">
         <Dialog.Panel className="bg-white p-6 rounded">
-          <div className="flex gap-20">
+          <div className="flex gap-20 items-start">
             <button onClick={closeAddAndReset}>
               <AiOutlineClose />
             </button>
@@ -112,24 +112,28 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-3">
             <div className="flex flex-col items-align gap-1 text-align">
-              <label>First Name: </label>
+              <label className="block text-grey-darker text-sm font-bold mb-2">
+                First Name:
+              </label>
               <input
                 type="text"
                 name="firstName"
                 {...register("firstName", { required: true })}
                 placeholder="First Name"
-                className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                className="border rounded w-full py-2 px-3 text-grey-darker"
               />
               {errors.lastName && (
                 <p className="text-red-900">First name is required.</p>
               )}
             </div>
             <div className="flex flex-col items-align gap-1 text-align">
-              <label>Last Name: </label>
+              <label className="block text-grey-darker text-sm font-bold mb-2">
+                Last Name:{" "}
+              </label>
               <input
                 type="text"
                 name="lastName"
-                className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                className="border rounded w-full py-2 px-3 text-grey-darker"
                 {...register("lastName", { required: true })}
                 placeholder="Last Name"
               />
@@ -138,35 +142,37 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
               )}
             </div>
             <div className="flex flex-col items-align gap-1 text-align">
-              <label>Email: </label>
+              <label className="block text-grey-darker text-sm font-bold mb-2">
+                Email:{" "}
+              </label>
               <input
                 type="text"
                 name="email"
                 {...register("email", { required: true })}
                 placeholder="Email"
-                className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                className="border rounded w-full py-2 px-3 text-grey-darker"
               />
               {errors.lastName && (
                 <p className="text-red-900">Email is required.</p>
               )}
             </div>
             <div className="flex flex-col items-align gap-1 text-align">
-              <label>Phone: </label>
+              <label className="block text-grey-darker text-sm font-bold mb-2">
+                Phone:{" "}
+              </label>
               <input
                 tabIndex={-1}
                 type="text"
                 name="phone"
                 {...register("phone", { required: true })}
                 placeholder="Phone"
-                className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
+                className="border rounded w-full py-2 px-3 text-grey-darker"
               />
               {errors.lastName && (
                 <p className="text-red-900">Phone number is required.</p>
               )}
             </div>
             <div className="flex flex-col items-align gap-1 text-align">
-              <label>Image:</label>
-              <input type="file" name="image" onChange={handleFileChange} />
               <img
                 src={
                   image !== undefined
@@ -176,11 +182,18 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
                 className=" w-20"
                 alt="img"
               />
+              <div className="flex gap-3 items-baseline text-center mt-2">
+                <label className="block text-grey-darker text-sm font-bold mb-2">
+                  Image:
+                </label>
+                <input type="file" name="image" onChange={handleFileChange} />
+              </div>
+
               <p className="text-red-900">{errorImageMessage}</p>
             </div>
             <div className="flex gap-7 pt-3">
               <button
-                className="px-10 py-2 text-md text-white bg-gray-700 rounded"
+                className="px-10 py-2 text-md text-white  bg-indigo-800 hover:bg-indigo-700 rounded"
                 type="submit"
                 ref={completeButtonRef}>
                 {mode === "edit" ? "Save" : "Submit"}

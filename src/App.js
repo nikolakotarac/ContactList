@@ -4,7 +4,7 @@ import { Navbar } from "./components/Navbar";
 
 function App() {
   return (
-    <div className="bg-transparent flex flex-col mx-auto p-6 my-auto">
+    <div className="bg-transparent flex flex-col mx-auto p-6 my-auto w-4/6 font-space">
       <Navbar />
       <ContactList />
     </div>
