@@ -1,34 +1,26 @@
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import { useGlobalContext } from "../context";
 
 export const Navbar = () => {
-  const { setSearchValue, filterBySearch } = useGlobalContext();
-
-  const searchRef = useRef(null);
+  const { searchValue, setSearchValue, filterBySearch } = useGlobalContext();
 
   return (
-    <form
-      className="relative"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSearchValue(searchRef.current.value);
-        filterBySearch();
-      }}>
+    <div className="relative">
       <div className="flex ">
         <input
-          className="bg-white shadow-lg rounded-lg text-left pl-10 p-5 outline-none text-gray-700 font-nomral text-xl w-full"
+          className="bg-white shadow-lg rounded-lg text-left pl-16 p-5 outline-none text-gray-700 font-nomral text-xl w-full"
           type="text"
           name="name"
           id="name"
           placeholder="Search Your Contact..."
-          ref={searchRef}
-          onChange={(e) => {
-            setSearchValue(searchRef.current.value);
+          value={searchValue}
+          onChange={(event) => {
+            setSearchValue(event.target.value);
           }}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3 absolute bottom-30 left-1"
+          className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3 absolute bottom-30 left-3"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">
@@ -40,6 +32,6 @@ export const Navbar = () => {
           />
         </svg>
       </div>
-    </form>
+    </div>
   );
 };

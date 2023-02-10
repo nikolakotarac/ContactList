@@ -1,23 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGlobalContext } from "../context";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
-
+import DeleteModal from "./DeleteModal";
 import AddOrEditContact from "./AddOrEditContact";
 import { MdOutlinePersonAdd } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const ContactList = () => {
   const {
     contacts,
-    handleDelete,
     addToFavourite,
-    filterFavourite,
-    allItemsHandle,
     handleEdit,
     handleAdd,
     showAddOrEditContact,
     mode,
     editContactId,
+    activeButton,
+    setToFavourite,
+    filterContacts,
+    filteredContacts,
   } = useGlobalContext();
+
+  const navigate = useNavigate();
+
+  let [isOpenDelete, setIsOpenDelete] = useState(false);
+
+  function closeDelete() {
+    setIsOpenDelete(false);
+  }
+
+  function openDelete() {
+    setIsOpenDelete(true);
+  }
 
   return (
     <div className="flex flex-col bg-white shadow-lg rounded-lg  mt-4">
@@ -25,21 +39,38 @@ const ContactList = () => {
         <h2 className="font-semibold text-xl text-gray-800">Contacts</h2>
         <div className="flex gap-4 ">
           <button
-            onClick={allItemsHandle}
-            className="text-xs bg-gray-900 font-semibold rounded-lg hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none">
+            onClick={() => {
+              setToFavourite(false);
+              filterContacts();
+            }}
+            className={`text-xs ${
+              activeButton === 1
+                ? "bg-gray-900 hover:bg-gray-700 text-white"
+                : "border border-gray-700 hover:bg-gray-100 text-gray-800"
+            }  font-semibold rounded-lg   px-4 py-2.5 `}>
             All Contacts
           </button>
           <button
-            onClick={filterFavourite}
-            className="text-xs border text-gray-800  font-semibold hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 rounded-lg px-4 py-2.5 duration-300 transition-colors focus:outline-none">
+            onClick={() => {
+              setToFavourite(true);
+              filterContacts();
+            }}
+            className={`text-xs ${
+              activeButton === 2
+                ? "bg-gray-900 hover:bg-gray-700  text-white"
+                : "border border-gray-700 hover:bg-gray-100 text-gray-800"
+            }  font-semibold rounded-lg  text-white px-4 py-2.5 `}>
             Favourites
           </button>
         </div>
         <button
-          className="text-xs bg-blue-700 rounded-lg hover:bg-blue-800 font-semibold  rounded-lg hover:bg-blue-800 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none"
-          onClick={handleAdd}>
+          className="flex gap-2 text-xs bg-blue-700 rounded-lg hover:bg-blue-800 font-semibold  rounded-lg hover:bg-blue-800 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none"
+          onClick={() => {
+            navigate("/addContact");
+            handleAdd();
+          }}>
+          <MdOutlinePersonAdd className="text-lg items-center" />
           Add Contact
-          <MdOutlinePersonAdd className="text-l " />
         </button>
       </header>
       <table className="w-full border-collapse text-left  text-gray-500">
@@ -59,15 +90,13 @@ const ContactList = () => {
               className="px-6 py-4 font-medium text-gray-900"></th>
           </tr>
         </thead>
-        {contacts && contacts.length > 0 ? (
-          contacts.map((res) => {
-            return (
-              <tbody
-                className=" divide-y divide-gray-100 border-b border-gray-300 "
-                key={res.id}>
-                <tr className="border-b border-gray-300 ">
+        <tbody className=" divide-y divide-gray-100 border-b border-gray-300 ">
+          {filteredContacts && filteredContacts.length > 0 ? (
+            filteredContacts.map((res) => {
+              return (
+                <tr className="border-b border-gray-300 " key={res.id}>
                   <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                    <div className="relative h-10 w-10">
+                    <div className="relative ">
                       <img
                         src={
                           res.image === undefined
@@ -75,7 +104,7 @@ const ContactList = () => {
                             : res.image
                         }
                         alt={res.firstName}
-                        className="w-12 h-12 object-cover rounded-full"
+                        className="w-16 h-12 object-cover rounded-full"
                       />
                     </div>
                     <div>
@@ -102,7 +131,7 @@ const ContactList = () => {
 
                   <td className="px-6 py-4">
                     <div className="flex justify-end gap-4">
-                      <button onClick={() => handleDelete(res)}>
+                      <button onClick={openDelete}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -118,7 +147,11 @@ const ContactList = () => {
                           />
                         </svg>
                       </button>
-                      <button onClick={() => handleEdit(res.id)}>
+                      <button
+                        onClick={() => {
+                          handleEdit(res.id);
+                          navigate(`contact/${res.id}`);
+                        }}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -135,18 +168,28 @@ const ContactList = () => {
                         </svg>
                       </button>
                     </div>
+                    <div>
+                      {isOpenDelete && (
+                        <DeleteModal
+                          isOpenDelete={isOpenDelete}
+                          closeDelete={closeDelete}
+                          openDelete={openDelete}
+                          res={res}
+                        />
+                      )}
+                    </div>
                   </td>
                 </tr>
-              </tbody>
-            );
-          })
-        ) : (
-          <div className=" justify-between  align-center h-auto flex items-center px-14 my-7 justify-between ">
-            <h2 className="text-3xl font-semibold text-gray-800">
-              This section is curently empty
-            </h2>
-          </div>
-        )}
+              );
+            })
+          ) : (
+            <div className=" justify-between  align-center h-auto flex items-center px-14 my-7 justify-between ">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                This section is curently empty
+              </h2>
+            </div>
+          )}
+        </tbody>
         <div className="m-5">
           {showAddOrEditContact &&
             editContactId !== null &&
