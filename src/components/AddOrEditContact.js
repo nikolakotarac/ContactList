@@ -1,44 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { useGlobalContext } from "../context";
 import { AiOutlineClose } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
+const AddOrEditContact = ({ initialValues }) => {
+
   const {
-    setContacts,
-    contacts,
+    addContact,
+    editContact,
     showAddOrEditContact,
     setShowAddOrEditContact,
   } = useGlobalContext();
 
-  const contact = contacts.find((c) => c.id === contactId);
-
   const navigate = useNavigate();
 
   let completeButtonRef = useRef(null);
+
+  const mode = useMemo(() => initialValues ? 'edit': 'add', [initialValues] );
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
-  } = useForm({ defaultValues: mode === "add" ? initialValues : contact });
+  } = useForm({ defaultValues: initialValues });
 
   const [errorImageMessage, setErrorImageMessage] = useState(null);
 
-  const [image, setImage] = useState(
-    mode === "add" ? initialValues.image : contact.image
-  );
-
-  useEffect(() => {
-    if (initialValues) {
-      Object.keys(initialValues).forEach((key) => {
-        setValue(key, initialValues[key]);
-      });
-    }
-  }, [initialValues, setValue]);
+  const [image, setImage] = useState(initialValues?.image);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -58,32 +48,15 @@ const AddOrEditContact = ({ mode, initialValues = {}, contactId }) => {
 
   const onSubmit = (data) => {
     if (mode === "add") {
-      const newContact = {
-        id: uuidv4(),
-        image: image,
-        favourite: false,
-        ...data,
-      };
+      addContact(data, image);
 
-      setContacts([...contacts, newContact]);
     }
 
     if (mode === "edit") {
-      const updatedContact = {
-        ...data,
-        id: contact.id,
-        favourite: contact.favourite,
-        image,
-      };
-
-      const editedContacts = contacts.map((c) =>
-        c.id === contact.id ? updatedContact : c
-      );
-      setContacts(editedContacts);
+      editContact(data, image);
     }
-    setShowAddOrEditContact(false);
-    reset();
-    navigate("/");
+
+    closeAddAndReset();
   };
 
   const closeAddAndReset = () => {
