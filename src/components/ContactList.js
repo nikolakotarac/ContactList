@@ -13,7 +13,7 @@ const ContactList = () => {
     handleAdd,
     showAddOrEditContact,
     mode,
-    editContactId,
+    editingContact,
     toFavourite,
     setToFavourite,
     filteredContacts,
@@ -183,13 +183,11 @@ const ContactList = () => {
           )}
         </tbody>
         <div className="m-5">
-          {showAddOrEditContact &&
-            editContactId !== null &&
-            mode === "edit" && (
-              <AddOrEditContact mode={mode} contactId={editContactId} />
+          {showAddOrEditContact && mode === "edit" && (
+              <AddOrEditContact initialValues={editingContact} />
             )}
           {showAddOrEditContact && mode === "add" && (
-            <AddOrEditContact mode={mode} />
+            <AddOrEditContact />
           )}
         </div>
       </table>

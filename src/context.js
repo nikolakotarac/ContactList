@@ -1,5 +1,6 @@
 import React, { useState, useContext, useMemo } from "react";
 import { useLocalStorage } from "react-use";
+import { v4 as uuidv4 } from "uuid";
 
 const AppContext = React.createContext();
 
@@ -41,6 +42,11 @@ const AppProvider = ({ children }) => {
   const [mode, setMode] = useState("");
   const [toFavourite, setToFavourite] = useState(false);
 
+  const editingContact = useMemo(
+    () => contacts.find((c) => c.id === editContactId),
+    [contacts, editContactId]
+  );
+
   const filteredContacts = useMemo(
     () => heavyComputation(contacts, searchValue, toFavourite),
     [contacts, searchValue, toFavourite]
@@ -55,6 +61,31 @@ const AppProvider = ({ children }) => {
     setShowAddOrEditContact(true);
     setEditContactId(id);
     setMode("edit");
+  };
+
+  const addContact = (data, image) => {
+    const newContact = {
+      id: uuidv4(),
+      favourite: false,
+      ...data,
+      image,
+    };
+
+    setContacts([...contacts, newContact]);
+  };
+
+  const editContact = (data, image) => {
+    const updatedContact = {
+      ...data,
+      id: editingContact.id,
+      favourite: editingContact.favourite,
+      image,
+    };
+
+    const editedContacts = contacts.map((c) =>
+      c.id === editingContact.id ? updatedContact : c
+    );
+    setContacts(editedContacts);
   };
 
   const handleDelete = (param) => {
@@ -81,6 +112,8 @@ const AppProvider = ({ children }) => {
         setSearchValue,
         handleEdit,
         handleAdd,
+        addContact,
+        editContact,
         showAddOrEditContact,
         setShowAddOrEditContact,
         mode,
@@ -90,6 +123,7 @@ const AppProvider = ({ children }) => {
         setToFavourite,
         filteredContacts,
         addToFavourite,
+        editingContact
       }}>
       {children}
     </AppContext.Provider>
