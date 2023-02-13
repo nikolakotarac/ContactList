@@ -8,16 +8,14 @@ import { useNavigate } from "react-router-dom";
 
 const ContactList = () => {
   const {
-    contacts,
     addToFavourite,
     handleEdit,
     handleAdd,
     showAddOrEditContact,
     mode,
     editContactId,
-    activeButton,
+    toFavourite,
     setToFavourite,
-    filterContacts,
     filteredContacts,
   } = useGlobalContext();
 
@@ -39,24 +37,18 @@ const ContactList = () => {
         <h2 className="font-semibold text-xl text-gray-800">Contacts</h2>
         <div className="flex gap-4 ">
           <button
-            onClick={() => {
-              setToFavourite(false);
-              filterContacts();
-            }}
+            onClick={() => setToFavourite(false)}
             className={`text-xs ${
-              activeButton === 1
+              toFavourite === false
                 ? "bg-gray-900 hover:bg-gray-700 text-white"
                 : "border border-gray-700 hover:bg-gray-100 text-gray-800"
             }  font-semibold rounded-lg   px-4 py-2.5 `}>
             All Contacts
           </button>
           <button
-            onClick={() => {
-              setToFavourite(true);
-              filterContacts();
-            }}
+            onClick={() => setToFavourite(true)}
             className={`text-xs ${
-              activeButton === 2
+              toFavourite === true
                 ? "bg-gray-900 hover:bg-gray-700  text-white"
                 : "border border-gray-700 hover:bg-gray-100 text-gray-800"
             }  font-semibold rounded-lg  text-white px-4 py-2.5 `}>

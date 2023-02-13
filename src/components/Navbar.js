@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useGlobalContext } from "../context";
 
 export const Navbar = () => {
-  const { searchValue, setSearchValue, filterBySearch } = useGlobalContext();
+  const { searchValue, setSearchValue } = useGlobalContext();
 
   return (
     <div className="relative">
