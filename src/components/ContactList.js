@@ -17,23 +17,26 @@ const ContactList = () => {
     toFavourite,
     setToFavourite,
     filteredContacts,
+    addContact,
+    editContact,
   } = useGlobalContext();
 
   const navigate = useNavigate();
 
   let [isOpenDelete, setIsOpenDelete] = useState(false);
-
+  let [deletedContact, setDeletedContact] = useState(null);
   function closeDelete() {
     setIsOpenDelete(false);
   }
 
-  function openDelete() {
+  function openDelete(contact) {
     setIsOpenDelete(true);
+    setDeletedContact(contact);
   }
 
   return (
-    <div className="flex flex-col bg-white shadow-lg rounded-lg  mt-4">
-      <header className="px-10 py-4 border-b border-gray-300  flex text-align items-center justify-between	">
+    <section className="flex flex-col bg-white shadow-lg rounded-lg  mt-4">
+      <header className="px-10 py-4  flex text-align items-center justify-between	">
         <h2 className="font-semibold text-xl text-gray-800">Contacts</h2>
         <div className="flex gap-4 ">
           <button
@@ -65,7 +68,7 @@ const ContactList = () => {
           Add Contact
         </button>
       </header>
-      <table className="w-full border-collapse text-left  text-gray-500">
+      <table className="w-full text-left  text-gray-500">
         <thead>
           <tr>
             <th scope="col" className="px-6 py-4  text-gray-900">
@@ -82,13 +85,13 @@ const ContactList = () => {
               className="px-6 py-4 font-medium text-gray-900"></th>
           </tr>
         </thead>
-        <tbody className=" divide-y divide-gray-100 border-b border-gray-300 ">
+        <tbody className=" divide-y  ">
           {filteredContacts && filteredContacts.length > 0 ? (
             filteredContacts.map((res) => {
               return (
-                <tr className="border-b border-gray-300 " key={res.id}>
+                <tr className="border-t border-gray-300 " key={res.id}>
                   <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                    <div className="relative ">
+                    <div className="w-14 h-14 ">
                       <img
                         src={
                           res.image === undefined
@@ -96,7 +99,7 @@ const ContactList = () => {
                             : res.image
                         }
                         alt={res.firstName}
-                        className="w-16 h-12 object-cover rounded-full"
+                        className="w-14 h-14 object-cover rounded-full max-w-none"
                       />
                     </div>
                     <div>
@@ -122,8 +125,8 @@ const ContactList = () => {
                   <td className="px-6 py-4 text-gray-800">{res.phone}</td>
 
                   <td className="px-6 py-4">
-                    <div className="flex justify-end gap-4">
-                      <button onClick={openDelete}>
+                    <div className="flex justify-end gap-4 ">
+                      <button onClick={() => openDelete(res)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -160,38 +163,40 @@ const ContactList = () => {
                         </svg>
                       </button>
                     </div>
-                    <div>
-                      {isOpenDelete && (
-                        <DeleteModal
-                          isOpenDelete={isOpenDelete}
-                          closeDelete={closeDelete}
-                          openDelete={openDelete}
-                          res={res}
-                        />
-                      )}
-                    </div>
                   </td>
                 </tr>
               );
             })
           ) : (
-            <div className=" justify-between  align-center h-auto flex items-center px-14 my-7 justify-between ">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                This section is curently empty
-              </h2>
-            </div>
+            <tr>
+              <th className="flex  items-center text-center m-5">
+                <h2 className="text-2xl font-semibold text-gray-800">
+                  This List is Curently Empty
+                </h2>
+              </th>
+            </tr>
           )}
         </tbody>
-        <div className="m-5">
-          {showAddOrEditContact && mode === "edit" && (
-              <AddOrEditContact initialValues={editingContact} />
-            )}
-          {showAddOrEditContact && mode === "add" && (
-            <AddOrEditContact />
-          )}
-        </div>
       </table>
-    </div>
+      {isOpenDelete && (
+        <DeleteModal
+          isOpenDelete={isOpenDelete}
+          closeDelete={closeDelete}
+          openDelete={openDelete}
+          deletedContact={deletedContact}
+        />
+      )}
+
+      {showAddOrEditContact && mode === "edit" && (
+        <AddOrEditContact
+          initialValues={editingContact}
+          onSubmit={editContact}
+        />
+      )}
+      {showAddOrEditContact && mode === "add" && (
+        <AddOrEditContact onSubmit={addContact} />
+      )}
+    </section>
   );
 };
 

@@ -6,9 +6,9 @@ const AppContext = React.createContext();
 
 function heavyComputation(contacts, searchValue, toFavourite) {
   let filtered = contacts;
-  
+
   if (toFavourite) {
-    filtered = contacts.filter(({favourite}) => favourite);
+    filtered = contacts.filter(({ favourite }) => favourite);
   }
 
   if (searchValue === "") {
@@ -89,10 +89,8 @@ const AppProvider = ({ children }) => {
   };
 
   const handleDelete = (param) => {
-    const delelteContact = contacts.filter(
-      (contact) => contact.id !== param.id
-    );
-    setContacts([...delelteContact]);
+    const deleteContact = contacts.filter((contact) => contact.id !== param.id);
+    setContacts([...deleteContact]);
   };
 
   const addToFavourite = (res) => {
@@ -123,7 +121,7 @@ const AppProvider = ({ children }) => {
         setToFavourite,
         filteredContacts,
         addToFavourite,
-        editingContact
+        editingContact,
       }}>
       {children}
     </AppContext.Provider>
