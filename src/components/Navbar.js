@@ -8,7 +8,7 @@ export const Navbar = () => {
     <div className="relative">
       <div className="flex ">
         <input
-          className="bg-white shadow-lg rounded-lg text-left pl-16 p-5 outline-none text-gray-700 font-nomral text-xl w-full"
+          className="bg-white shadow-lg rounded-lg text-left pl-16 p-5 outline-none text-gray-700 font-nomral text-base sm:text-xl w-full"
           type="text"
           name="name"
           id="name"

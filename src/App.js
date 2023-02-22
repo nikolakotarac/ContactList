@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
-    <div className="bg-transparent flex flex-col mx-auto p-6 my-auto w-4/6 font-space">
+    <div className="bg-transparent  mx-auto px-10 py-10 my-auto font-space">
       <Router>
         <Navbar />
         <ContactList />

@@ -5,13 +5,8 @@ import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
 
 import { useNavigate } from "react-router-dom";
-const AddOrEditContact = ({ initialValues }) => {
-  const {
-    addContact,
-    editContact,
-    showAddOrEditContact,
-    setShowAddOrEditContact,
-  } = useGlobalContext();
+const AddOrEditContact = ({ onSubmit, initialValues }) => {
+  const { showAddOrEditContact, setShowAddOrEditContact } = useGlobalContext();
 
   const navigate = useNavigate();
 
@@ -46,12 +41,8 @@ const AddOrEditContact = ({ initialValues }) => {
     };
   };
 
-  const onSubmit = (data) => {
-    if (mode === "add") {
-      addContact(data, image);
-    } else {
-      editContact(data, image);
-    }
+  const DoOnSubmit = (data) => {
+    onSubmit(data, image);
 
     closeAddAndReset();
   };
@@ -73,7 +64,7 @@ const AddOrEditContact = ({ initialValues }) => {
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
         <section className="fixed inset-0 overflow-y-auto font-space">
-          <section className="flex min-h-full items-center justify-center p-2 text-center">
+          <section className="flex my-10 items-center sm:justify-center p-2 text-center ">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -82,7 +73,7 @@ const AddOrEditContact = ({ initialValues }) => {
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95">
-              <Dialog.Panel className="w-full max-w-md flex flex-col  transform overflow-hidden rounded-xl bg-white py-3 px-4   shadow-xl transition-all">
+              <Dialog.Panel className=" max-w-md flex flex-col  transform overflow-hidden rounded-xl bg-white py-3 px-2 md:px-4 shadow-xl transition-all ">
                 <div className="flex gap-20 items-start ">
                   <button
                     onClick={closeAddAndReset}
@@ -97,7 +88,7 @@ const AddOrEditContact = ({ initialValues }) => {
                 </div>
                 <form
                   tabIndex={-1}
-                  onSubmit={handleSubmit(onSubmit)}
+                  onSubmit={handleSubmit(DoOnSubmit)}
                   className="flex flex-col gap-3 mt-4 ">
                   <div className="flex flex-col items-align gap-1 text-align">
                     <input

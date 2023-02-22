@@ -35,10 +35,12 @@ const ContactList = () => {
   }
 
   return (
-    <section className="flex flex-col bg-white shadow-lg rounded-lg  mt-4">
-      <header className="px-10 py-4  flex text-align items-center justify-between	">
-        <h2 className="font-semibold text-xl text-gray-800">Contacts</h2>
-        <div className="flex gap-4 ">
+    <section className="flex flex-col bg-white shadow-lg rounded-lg mt-4 ">
+      <header className="flex flex-col sm:flex-row px-4 py-2 gap-3 sm:gap-0  text-center items-center justify-around ">
+        <h2 className="hidden font-semibold text-xl md:block text-gray-800">
+          Contacts
+        </h2>
+        <div className="flex flex-col sm:flex-row  gap-2 sm:gap-4 ">
           <button
             onClick={() => setToFavourite(false)}
             className={`text-xs ${
@@ -52,7 +54,7 @@ const ContactList = () => {
             onClick={() => setToFavourite(true)}
             className={`text-xs ${
               toFavourite === true
-                ? "bg-gray-900 hover:bg-gray-700  text-white"
+                ? "bg-gray-900 hover:bg-gray-700 text-white"
                 : "border border-gray-700 hover:bg-gray-100 text-gray-800"
             }  font-semibold rounded-lg  text-white px-4 py-2.5 `}>
             Favourites
@@ -64,55 +66,56 @@ const ContactList = () => {
             navigate("/addContact");
             handleAdd();
           }}>
-          <MdOutlinePersonAdd className="text-lg items-center" />
+          <MdOutlinePersonAdd className="text-lg items-center " />
           Add Contact
         </button>
       </header>
-      <table className="w-full text-left  text-gray-500">
+      <table className=" text-left  text-gray-500">
         <thead>
-          <tr>
-            <th scope="col" className="px-6 py-4  text-gray-900">
+          <tr className="hidden  text-sm md:text-base md:flex px-6 py-4 ">
+            <th scope="col" className="md:basis-5/12  text-gray-900">
               Name
             </th>
-            <th scope="col" className="px-6 py-4 text-l  text-gray-900">
+            <th scope="col" className=" md:basis-4/12  text-gray-900">
               Favourite
             </th>
-            <th scope="col" className="px-6 py-4  text-gray-900">
+            <th scope="col" className="  md:basis-2/12 text-gray-900">
               Phone Number
             </th>
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900"></th>
+            <th scope="col" className="  md:basis-1/12  text-gray-900"></th>
           </tr>
         </thead>
-        <tbody className=" divide-y  ">
+        <tbody>
           {filteredContacts && filteredContacts.length > 0 ? (
             filteredContacts.map((res) => {
               return (
-                <tr className="border-t border-gray-300 " key={res.id}>
-                  <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                    <div className="w-14 h-14 ">
-                      <img
-                        src={
-                          res.image === undefined
-                            ? ` https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png`
-                            : res.image
-                        }
-                        alt={res.firstName}
-                        className="w-14 h-14 object-cover rounded-full max-w-none"
-                      />
-                    </div>
+                <tr
+                  className="px-0 sm:px-4 py-4 border-t items-center border-gray-300 items-center grid grid-cols-3 gap-1 sm:gap-2 text-center  md:flex"
+                  key={res.id}>
+                  <td className="flex gap-3 col-span-2 w-10 h-10 sm:w-16 sm:h-16  font-normal items-center text-gray-900 md:basis-5/12">
+                    <img
+                      src={
+                        res.image === undefined
+                          ? ` https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png`
+                          : res.image
+                      }
+                      alt={res.firstName}
+                      className="w-10 h-10 sm:w-16 sm:h-16  object-cover rounded-full max-w-none"
+                    />
+
                     <div>
-                      <div className="font-semibold text-gray-800 ">
+                      <div className="font-semibold text-sm sm:text-base text-gray-800 text-left">
                         {res.firstName} {res.lastName}
                       </div>
-                      <div className="text-gray-500">{res.email}</div>
+                      <div className="text-gray-500 text-xs sm:text-base ">
+                        {res.email}
+                      </div>
                     </div>
-                  </th>
-                  <td className="px-6 py-4">
+                  </td>
+                  <td className=" md:basis-1/12 pl-5 pb-4 md:pl-0 md:pb-6 lg:0 ">
                     <div>
                       <button
-                        className="cursor-pointer text-xl  text-gray-800 px-2 rounded"
+                        className="cursor-pointer  text-xl  text-gray-800 px-2 rounded"
                         onClick={() => addToFavourite(res)}>
                         {res.favourite === true ? (
                           <AiFillStar className="text-yellow-500 " />
@@ -122,10 +125,12 @@ const ContactList = () => {
                       </button>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-800">{res.phone}</td>
-
-                  <td className="px-6 py-4">
-                    <div className="flex justify-end gap-4 ">
+                  <td className="flex  justify-center md:justify-end pl-16 md:pl-0 gap-2 sm:pl-0  col-span-2 sm:py-2 md:px-0 md:py-0 md:pl-0 text-base text-gray-800 md:basis-4/12 ">
+                    <p className="text-base md:hidden">Number: </p>
+                    <h4 className="text-base lg:pr-10">{res.phone}</h4>
+                  </td>
+                  <td className="col-span-2 md-basis-2/12  ">
+                    <div className="flex gap-8 justify-center md:gap-3 lg:pl-10 md:pl-0">
                       <button onClick={() => openDelete(res)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

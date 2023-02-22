@@ -14,7 +14,7 @@ const DeleteModal = ({ isOpenDelete, deletedContact, closeDelete }) => {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto font-space">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex mt-36 items-center md:justify-center p-4 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -28,7 +28,7 @@ const DeleteModal = ({ isOpenDelete, deletedContact, closeDelete }) => {
                   <button onClick={closeDelete} className="hover:text-gray-700">
                     <AiOutlineClose />
                   </button>
-                  <h3 className="mb-3 text-xl font-semibold text-center mb-3">
+                  <h3 className="mb-3 text-base sm:text-xl font-semibold text-center mb-3">
                     Are you sure you want to delete this contact?
                   </h3>
                 </div>
