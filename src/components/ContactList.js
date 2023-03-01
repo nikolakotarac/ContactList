@@ -36,7 +36,7 @@ const ContactList = () => {
 
   return (
     <section className="flex flex-col bg-white shadow-lg rounded-lg mt-4 ">
-      <header className="flex flex-col sm:flex-row px-4 py-2 gap-3 sm:gap-0  text-center items-center justify-around ">
+      <header className="flex flex-col sm:flex-row px-4 py-2 gap-3 text-center items-center justify-around ">
         <h2 className="hidden font-semibold text-xl md:block text-gray-800">
           Contacts
         </h2>
@@ -76,10 +76,10 @@ const ContactList = () => {
             <th scope="col" className="md:basis-5/12  text-gray-900">
               Name
             </th>
-            <th scope="col" className=" md:basis-4/12  text-gray-900">
+            <th scope="col" className=" md:basis-3/12  text-gray-900">
               Favourite
             </th>
-            <th scope="col" className="  md:basis-2/12 text-gray-900">
+            <th scope="col" className="  md:basis-3/12 pl-5 text-gray-900">
               Phone Number
             </th>
             <th scope="col" className="  md:basis-1/12  text-gray-900"></th>
@@ -90,7 +90,7 @@ const ContactList = () => {
             filteredContacts.map((res) => {
               return (
                 <tr
-                  className="px-0 sm:px-4 py-4 border-t items-center border-gray-300 items-center grid grid-cols-3 gap-1 sm:gap-2 text-center  md:flex"
+                  className="px-2 sm:px-4 py-4 border-t items-center border-gray-300 items-center grid grid-cols-3 gap-1 sm:gap-2 text-center  md:flex"
                   key={res.id}>
                   <td className="flex gap-3 col-span-2 w-10 h-10 sm:w-16 sm:h-16  font-normal items-center text-gray-900 md:basis-5/12">
                     <img

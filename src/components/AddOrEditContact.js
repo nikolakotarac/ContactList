@@ -41,7 +41,7 @@ const AddOrEditContact = ({ onSubmit, initialValues }) => {
     };
   };
 
-  const DoOnSubmit = (data) => {
+  const doOnSubmit = (data) => {
     onSubmit(data, image);
 
     closeAddAndReset();
@@ -88,7 +88,7 @@ const AddOrEditContact = ({ onSubmit, initialValues }) => {
                 </div>
                 <form
                   tabIndex={-1}
-                  onSubmit={handleSubmit(DoOnSubmit)}
+                  onSubmit={handleSubmit(doOnSubmit)}
                   className="flex flex-col gap-3 mt-4 ">
                   <div className="flex flex-col items-align gap-1 text-align">
                     <input
